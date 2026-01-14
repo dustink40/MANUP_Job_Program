@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Price Book Entry</title>
+    <!-- Include CSS and other head elements -->
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Price Book Entry</h1>
+        <form action="{{ url_for('update_client_entry', id=entry.id) }}" method="post">
+
+            <div class="form-group">
+                <label for="client_name">Name</label>
+                <input type="text" id="client_name" name="client_name" value="{{ entry.client_name }}">
+            </div>
+
+            <div class="form-group">
+                <label for="client_address">Address</label>
+                <textarea class="text" id="client_address" name="client_address" value="{{ entry.client_address }}"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="client_phone_number">Phone Number</label>
+                <input type="text" id="client_phone_number" name="client_phone_number" value="{{ entry.client_phone_number}}">
+            </div>
+
+            <div class="form-group">
+                <label for="client_email">Email</label>
+                <input type="text" id="client_email" name="client_email" value="{{ entry.client_email }}">
+            </div>
+            <!-- Form elements pre-filled with 'entry' data -->
+            <!-- Include Job Name, Description, Other Guys Price, MAN UP Price -->
+            <button type="submit" class="btn btn-primary">Update Entry</button>
+        </form>
+    </div>
+</body>
+</html>

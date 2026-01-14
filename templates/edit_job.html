@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Job</title>
+</head>
+<body>
+    <div class="container">
+    <h1 class="mt-4">Edit Job</h1>
+    <form action="{{ url_for('update_job', job_id=job['job_id']) }}" method="post" class="mb-3">
+    <form action="/edit/{{ job[0] }}" method="post">
+
+        <div class="form-group">
+            <label for="job_name">Job Name:</label>
+            <input type="text" id="job_name" name="job_name" value="{{ job['job_name'] }}">
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" value="{{ job['address'] }}">
+        </div>
+
+    <!-- Assuming job['price'] contains the price -->
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price" class="form-control" value="{{ job['price'] }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="projected_start_date">Proj. Start Date:</label>
+            <input type="date" id="projected_start_date" name="projected_start_date" class="form-control" value="{{ job['projected_start_date'] }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="projected_end_date">Proj. End Date:</label>
+            <input type="date" id="projected_end_date" name="projected_end_date" class="form-control" value="{{ job['projected_end_date'] }}" required>
+        </div>
+
+
+        <div class="form-group">
+            <select name="type_id">
+                {% for type in job_types %}
+                    <option value="{{ type.type_id }}" {% if type.type_id == job['type_id'] %}selected{% endif %}>{{ type.type_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="customer_name">Customer Name:</label>
+            <input type="text" id="customer_name" name="customer_name" value="{{ job['customer_name'] }}">
+        </div>
+
+        <div class="form-group">
+            <label for="customer_phone_number">Phone Number:</label>
+            <input type="text" id="customer_phone_number" name="customer_phone_number" value="{{ job['customer_phone_number'] }}">
+        </div>
+
+        <div class="form-group">
+            <label for="customer_address">Address:</label>
+            <input type="text" id="customer_address" name="customer_address" value="{{ job['customer_address'] }}">
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" value="{{ job['email'] }}">
+        </div>
+
+        <div class="form-group">
+            <label for="job_details">Job Details</label>
+            <textarea id="job_details" name="job_details" value="{{ job['job_details'] }}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select class="form-control" id="status" name="status">
+                <option value="Not Started" {% if job[9] == 'Not Started' %}selected{% endif %}>Not Started</option>
+                <option value="Started" {% if job[9] == 'Started' %}selected{% endif %}>Started</option>
+                <option value="Completed" {% if job[9] == 'Completed' %}selected{% endif %}>Completed</option>
+            </select>
+        
+        <input type="submit" value="Update Job">
+    </form>
+    <a href="/view" class="btn btn-secondary">Back to Jobs List</a>
+</div>
+</body>
+</html>

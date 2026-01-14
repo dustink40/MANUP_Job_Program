@@ -1,0 +1,115 @@
+{% extends "walkthrough/base.html" %}
+
+{% block title %}Walkthrough – Add Findings{% endblock %}
+
+{% block header %}
+<h1>Walkthrough – {{ job.job_name }}</h1>
+
+<div class="actions-inline">
+    <a href="{{ url_for('job_details', job_id=job.job_id) }}"
+       class="btn btn-secondary">
+        Back to Job
+    </a>
+
+    <a href="{{ url_for('walkthrough_report_pdf', job_id=job.job_id) }}"
+       class="btn btn-primary">
+        Download Walkthrough Report
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<h2>Add Area</h2>
+<form method="post">
+    <input type="hidden" name="action" value="add_area">
+
+    <input type="text"
+        name="area_name"
+        class="form-control mb-2"
+        placeholder="Enter area (Kitchen, Bathroom, Exterior, etc.)"
+        required>
+    <button type="submit" class="btn btn-secondary">
+        Add Area
+    </button>
+</form>
+
+<hr>
+
+<h2>Add Finding</h2>
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="action" value="add_finding">
+
+    <div class="form-group">
+        <label>Area</label>
+        <select name="area_id" class="form-control" required>
+            {% for area in areas %}
+            <option value="{{ area.area_id }}">{{ area.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Finding</label>
+        <input type="text"
+               name="problem_text"
+               class="form-control"
+               placeholder="Describe the issue"
+               required>
+    </div>
+
+    <div class="form-group">
+        <label>Notes (optional)</label>
+        <textarea name="notes"
+                  class="form-control"
+                  rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Photos (optional)</label>
+        <input type="file"
+               name="images"
+               multiple
+               class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Add Finding
+    </button>
+</form>
+
+<hr>
+
+<h2>Areas & Findings</h2>
+
+{% for area in areas %}
+<div class="card walkthrough-area">
+
+    <div class="card-header">
+        <strong>{{ area.name }}</strong>
+    </div>
+
+    <div class="card-body">
+
+        {% if findings[area.area_id] %}
+        <ul class="list">
+            {% for finding in findings[area.area_id] %}
+            <li class="list-item">
+                <strong>{{ finding.problem_text }}</strong><br>
+
+                {% if finding.notes %}
+                <em>{{ finding.notes }}</em><br>
+                {% endif %}
+
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="muted">No findings for this area.</p>
+        {% endif %}
+
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Completed Jobs</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Completed Jobs</h1>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Job Name</th>
+                            <th>Address</th>
+                            <th>Price</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Type</th>
+                            <th>Customer</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for job in jobs %}
+                        <tr>
+                            <td>{{ job.job_name }}</td>
+                            <td>{{ job.address }}</td>
+                            <td>${{ "%.2f"|format(job.price) }}</td>
+                            <td>{{ job.projected_start_date }}</td>
+                            <td>{{ job.projected_end_date }}</td>
+                            <td>{{ job.job_type or 'Type Not Set' }}</td>
+                            <td>{{ job.customer_name }}</td>
+                            <td>{{ job.customer_phone_number }}</td>
+                            <td>{{ job.email }}</td>
+                            <td>{{ job.status or 'Status Not Set' }}</td>
+                            <td>
+                                <a href="{{ url_for('job_details', job_id=job.job_id) }}"
+                                   class="btn btn-secondary">
+                                   View
+                                </a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="11" class="empty-state">
+                                No completed jobs.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">
+                Back to Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

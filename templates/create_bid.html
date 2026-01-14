@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Bid</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+</head>
+
+<body>
+<div class="container">
+<div class="card">
+
+<h1>Create Job Estimate</h1>
+
+<form action="/submit_estimate" method="post">
+
+<!-- COMPANY INFO -->
+<h2 class="section-title">Company Info</h2>
+
+<div class="form-group">
+    <label>Date</label>
+    <input type="date" name="date">
+</div>
+
+<div class="form-group">
+    <label>Estimate Number</label>
+    <input type="text" name="estimate_number">
+</div>
+
+<div class="form-group">
+    <label>Prepared By</label>
+    <input type="text" name="prepared_by">
+</div>
+
+<!-- CLIENT INFO -->
+<h2 class="section-title">Client Info</h2>
+
+<div class="form-group">
+    <label>Customer</label>
+    <input type="text" name="customer">
+</div>
+
+<div class="form-group">
+    <label>Address</label>
+    <input type="text" name="address">
+</div>
+
+<div class="form-group">
+    <label>Email</label>
+    <input type="email" name="email">
+</div>
+
+<div class="form-group">
+    <label>Phone</label>
+    <input type="tel" name="phone">
+</div>
+
+<!-- JOB INFO -->
+<h2 class="section-title">Job Info</h2>
+
+<div class="form-group">
+    <label>Projected Start Date</label>
+    <input type="date" name="projected_start_date">
+</div>
+
+<div class="form-group">
+    <label>Projected End Date</label>
+    <input type="date" name="projected_end_date">
+</div>
+
+<div class="form-group">
+    <label>Estimated Hours / Days</label>
+    <input type="text" name="estimated_hours_days">
+</div>
+
+<!-- MATERIALS -->
+<h2 class="section-title">Materials</h2>
+
+<div class="table-wrapper">
+<table class="data-table">
+<thead>
+<tr>
+    <th>Description</th>
+    <th>Qty</th>
+    <th>Price</th>
+    <th>Amount</th>
+    <th></th>
+</tr>
+</thead>
+<tbody id="itemTableBody"></tbody>
+</table>
+</div>
+
+<button type="button" class="btn btn-secondary" onclick="addItemRow()">
+    + Add Material
+</button>
+
+<!-- LABOR -->
+<h2 class="section-title">Labor</h2>
+
+<div class="table-wrapper">
+<table class="data-table">
+<thead>
+<tr>
+    <th>Task</th>
+    <th>Rate</th>
+    <th>Hours</th>
+    <th>Total</th>
+    <th></th>
+</tr>
+</thead>
+<tbody id="taskTableBody"></tbody>
+</table>
+</div>
+
+<button type="button" class="btn btn-secondary" onclick="addTaskRow()">
+    + Add Task
+</button>
+
+<!-- NOTES -->
+<h2 class="section-title">Notes</h2>
+
+<div class="form-group">
+    <textarea name="notes" rows="4"></textarea>
+</div>
+
+<!-- TOTALS -->
+<h2 class="section-title">Totals</h2>
+
+<div class="form-group">
+    <label>Material Total</label>
+    <input type="number" id="material_total" name="material_total">
+</div>
+
+<div class="form-group">
+    <label>Labor Total</label>
+    <input type="number" id="labor_total" name="labor_total">
+</div>
+
+<div class="form-group">
+    <label>Other</label>
+    <input type="number" id="other" name="other">
+</div>
+
+<div class="form-group">
+    <label>Grand Total</label>
+    <input type="number" id="grand_total" name="grand_total">
+</div>
+
+<button type="submit" class="btn btn-primary">
+    Save Bid
+</button>
+
+<a href="{{ url_for('view_bids') }}" class="btn btn-secondary">
+    Back to Bids
+</a>
+
+</form>
+</div>
+</div>
+
+<!-- YOUR JS (UNCHANGED LOGIC) -->
+<script>
+        function addItemRow() {
+            const tableBody = document.getElementById('itemTableBody');
+            const row = tableBody.insertRow();
+            row.innerHTML = `
+                <td><input type="text" name="description[]" class="form-control"></td>
+                <td><input type="number" name="quantity[]" class="form-control" min="0" onchange="calculateAmount(this)"></td>
+                <td><input type="number" name="price[]" class="form-control" min="0" onchange="calculateAmount(this)"></td>
+                <td><input type="number" name="amount[]" class="form-control" readonly></td>
+                <td><button type="button" class="btn btn-danger" onclick="removeItemRow(this)">Remove</button></td>
+            `;
+        }
+
+        function calculateAmount(input) {
+            const row = input.parentElement.parentElement;
+            const quantity = row.querySelector('input[name="quantity[]"]').value;
+            const price = row.querySelector('input[name="price[]"]').value;
+            const amount = row.querySelector('input[name="amount[]"]');
+            amount.value = (quantity * price).toFixed(2);
+            updateMaterialTotal();
+        }
+
+        function removeItemRow(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+            updateMaterialTotal();
+        }
+        function updateMaterialTotal() {
+            const amountInputs = document.querySelectorAll('input[name="amount[]"]');
+            let materialTotal = 0;
+
+        amountInputs.forEach((input) => {
+            if (input.value) {
+                materialTotal += parseFloat(input.value);
+            }
+        });
+
+        document.getElementById('material_total').value = materialTotal.toFixed(2);
+        calculateGrandTotal();
+
+    }
+        function addTaskRow() {
+            const tableBody = document.getElementById('taskTableBody');
+            const row = tableBody.insertRow();
+            row.innerHTML = `
+                <td><input type="text" name="task[]" class="form-control"></td>
+                <td><input type="number" name="labor_price[]" class="form-control" min="0" onchange="calculateLaborTotal(this)"></td>
+                <td><input type="number" name="hours[]" class="form-control" min="0" onchange="calculateLaborTotal(this)"></td>
+                <td><input type="number" name="labor_total[]" class="form-control" readonly></td>
+                <td><button type="button" class="btn btn-danger" onclick="removeTaskRow(this)">Remove</button></td>
+            `;
+        }
+        function calculateLaborTotal(input) {
+            const row = input.parentElement.parentElement;
+            const price = row.querySelector('input[name="labor_price[]"]').value;
+            const hours = row.querySelector('input[name="hours[]"]').value;
+            const total = row.querySelector('input[name="labor_total[]"]');
+            total.value = (hours * price).toFixed(2);
+            updateLaborTotal();
+        }
+
+        function removeTaskRow(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+            updateLaborTotal();
+        }
+
+        function updateLaborTotal() {
+            const totalInputs = document.querySelectorAll('input[name="labor_total[]"]');
+            let laborTotal = 0;
+
+            totalInputs.forEach((input) => {
+                if (input.value) {
+                    laborTotal += parseFloat(input.value);
+                }
+            });
+
+            document.getElementById('labor_total').value = laborTotal.toFixed(2);
+            calculateGrandTotal();
+
+
+            
+        }
+
+        
+        function calculateGrandTotal() {
+            const materialTotal = parseFloat(document.getElementById('material_total').value) || 0;
+            const laborTotal = parseFloat(document.getElementById('labor_total').value) || 0;
+            const other = parseFloat(document.getElementById('other').value) || 0;
+
+            document.getElementById('grand_total').value = (materialTotal + laborTotal + other).toFixed(2);
+
+
+        }
+
+        document.getElementById('other').addEventListener('input', calculateGrandTotal);
+        
+    </script>
+
+</body>
+</html>

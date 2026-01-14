@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+</head>
+
+<body>
+<div class="container">
+<div class="card document">
+
+<!-- HEADER -->
+<h1>{{ job.job_name }}</h1>
+
+<!-- JOB + CUSTOMER INFO -->
+<h2 class="section-title">Job Information</h2>
+
+<div class="info-grid">
+    <div><strong>Address:</strong> {{ job.address }}</div>
+    <div><strong>Price:</strong> ${{ job.price }}</div>
+    <div><strong>Projected Start:</strong> {{ job.projected_start_date }}</div>
+    <div><strong>Projected End:</strong> {{ job.projected_end_date }}</div>
+    <div>
+        <strong>Job Type:</strong>
+        {% for job_type in job_types %}
+            {% if job_type.type_id == job.type_id %}
+                {{ job_type.type_name }}
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div><strong>Status:</strong> {{ job.status or 'Status Not Set' }}</div>
+</div>
+
+<h2 class="section-title">Customer Information</h2>
+
+<div class="info-grid">
+    <div><strong>Name:</strong> {{ job.customer_name }}</div>
+    <div><strong>Phone:</strong> {{ job.customer_phone_number }}</div>
+    <div><strong>Address:</strong> {{ job.customer_address }}</div>
+    <div><strong>Email:</strong> {{ job.email }}</div>
+</div>
+
+<!-- JOB DETAILS -->
+{% if job.job_details %}
+<h2 class="section-title">Job Details</h2>
+<p class="notes">{{ job.job_details }}</p>
+{% endif %}
+
+<!-- TOOLS -->
+<h2 class="section-title">Tools Required</h2>
+
+<ul class="tool-list">
+    {% for tool in tools %}
+        <li>
+            <input type="checkbox" checked disabled>
+            {{ tool.tool_name }}
+        </li>
+    {% else %}
+        <li>No tools required or job type not set.</li>
+    {% endfor %}
+</ul>
+
+<!-- INSTRUCTIONS -->
+<h2 class="section-title">Instructions</h2>
+
+{% if instructions %}
+<p class="notes">{{ instructions }}</p>
+{% else %}
+<p class="muted">No instructions available.</p>
+{% endif %}
+
+<!-- WALKTHROUGH -->
+ {% if job.workflow_type in ['inspection', 'repair'] %}
+
+    <h2 class="section-title">Inspection Walkthrough</h2>
+
+    <div class="actions">
+        <a href="{{ url_for('walkthrough_entry', job_id=job.job_id) }}"
+       class="btn btn-primary">
+        Start / Continue Walkthrough
+    </a>
+    
+
+    <a href="{{ url_for('walkthrough_review', job_id=job.job_id) }}"
+       class="btn btn-secondary">
+        Review Findings
+    </a>
+
+    <a href="{{ url_for('walkthrough_report_pdf', job_id=job.job_id) }}"
+       class="btn btn-secondary">
+        Inspection PDF
+    </a>
+
+    <a href="{{ url_for('walkthrough_work_order_pdf', job_id=job.job_id) }}"
+       class="btn btn-secondary">
+        Work Order PDF
+    </a>
+    {% endif %}
+</div>
+
+
+<!-- ACTIONS -->
+<div class="no-print actions">
+    <a href="{{ url_for('view_jobs') }}" class="btn btn-secondary">
+        Back to Jobs
+    </a>
+    <button onclick="window.print()" class="btn btn-secondary">
+        Print
+    </button>
+    <a href="{{ url_for('download_job_pdf', job_id=job.job_id) }}"
+       class="btn btn-primary">
+       Download PDF
+    </a>
+</div>
+
+</div>
+</div>
+</body>
+</html>

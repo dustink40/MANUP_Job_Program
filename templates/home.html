@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MAN UP – Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>MAN UP Dashboard</h1>
+            <p class="muted">
+                Job management, and bids — all in one place.
+            </p>
+
+            <div class="dashboard-grid">
+
+                <!-- JOBS -->
+                <div class="dashboard-section">
+                    <h2>Jobs</h2>
+                    <a href="/add_job" class="btn btn-primary">Add Job</a>
+                    <a href="/view_jobs" class="btn btn-secondary">View Jobs</a>
+                    <a href="/completed_jobs" class="btn btn-secondary">Completed Jobs</a>
+                </div>
+
+
+                <!-- CLIENTS -->
+                <div class="dashboard-section">
+                    <h2>Clients</h2>
+                    <a href="/add_client" class="btn btn-primary">Add Client</a>
+                    <a href="/client_list" class="btn btn-secondary">Client List</a>
+                </div>
+
+                <!-- BIDS & PRICING -->
+                <div class="dashboard-section">
+                    <h2>Bids & Pricing</h2>
+                    <a href="/create_bid" class="btn btn-primary">Create Bid</a>
+                    <a href="/view_bids" class="btn btn-secondary">View Bids</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

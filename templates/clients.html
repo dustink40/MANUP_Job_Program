@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Client List</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Clients</h1>
+
+            <a href="{{ url_for('add_client') }}" class="btn btn-primary">
+                Add New Client
+            </a>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in clients %}
+                        <tr>
+                            <td>{{ entry.client_name }}</td>
+                            <td>{{ entry.client_address }}</td>
+                            <td>{{ entry.client_phone_number }}</td>
+                            <td>{{ entry.client_email }}</td>
+                            <td>
+                                <a href="{{ url_for('edit_client_entry', id=entry.id) }}"
+                                   class="btn btn-secondary">
+                                   Edit
+                                </a>
+                            </td>
+                            <td>
+                                <form action="{{ url_for('delete_client_entry', id=entry.id) }}"
+                                      method="post"
+                                      onsubmit="return confirm('Delete this client?');">
+                                    <button type="submit" class="btn btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                No clients found.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">
+                Back to Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

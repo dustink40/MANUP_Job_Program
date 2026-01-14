@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bid Details</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card document">
+
+            <!-- HEADER -->
+            <div class="document-header">
+                <div>
+                    <h1>Bid Details</h1>
+                    <p><strong>Date:</strong> {{ bid.date }}</p>
+                    <p><strong>Estimate #:</strong> {{ bid.estimate_number }}</p>
+                    <p><strong>Prepared By:</strong> {{ bid.prepared_by }}</p>
+                </div>
+
+                <div class="document-logo">
+                    <img src="{{ url_for('static', filename='images/MAN-UP.jpg') }}" alt="MAN UP">
+                    <p>Dustin Keith</p>
+                    <p>458-285-4033</p>
+                </div>
+            </div>
+
+            <!-- CUSTOMER INFO -->
+            <h2 class="section-title">Customer Info</h2>
+
+            <div class="info-grid">
+                <div><strong>Customer:</strong> {{ bid.customer }}</div>
+                <div><strong>Phone:</strong> {{ bid.phone }}</div>
+                <div><strong>Address:</strong> {{ bid.address }}</div>
+                <div><strong>Email:</strong> {{ bid.email }}</div>
+            </div>
+
+            <!-- SCHEDULE -->
+            <h2 class="section-title">Schedule</h2>
+
+            <div class="info-grid">
+                <div><strong>Projected Start:</strong> {{ bid.projected_start_date }}</div>
+                <div><strong>Projected End:</strong> {{ bid.projected_end_date }}</div>
+                <div><strong>Estimated Time:</strong> {{ bid.estimated_hours_days }}</div>
+            </div>
+
+            <!-- MATERIALS -->
+            <h2 class="section-title">Materials</h2>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in bid_items %}
+                    <tr>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>${{ item.amount }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- LABOR -->
+            <h2 class="section-title">Labor</h2>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Rate</th>
+                        <th>Hours</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in labor_items %}
+                    <tr>
+                        <td>{{ task.task }}</td>
+                        <td>{{ task.labor_price }}</td>
+                        <td>{{ task.hours }}</td>
+                        <td>${{ task.labor_total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- NOTES -->
+            {% if bid.notes %}
+                <h2 class="section-title">Notes</h2>
+                <p class="notes">{{ bid.notes }}</p>
+            {% endif %}
+
+            <!-- TOTALS -->
+            <h2 class="section-title">Totals</h2>
+
+            <div class="totals-box">
+                <div><span>Material Total</span><span>${{ bid.material_total }}</span></div>
+                <div><span>Labor Total</span><span>${{ bid.labor_total }}</span></div>
+                <div><span>Other</span><span>${{ bid.other }}</span></div>
+                <div class="grand-total">
+                    <span>Grand Total</span>
+                    <span>${{ bid.grand_total }}</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

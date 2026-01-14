@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work Order</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 24px;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        .work-item {
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Work Order</h1>
+<h2>{{ job.job_name }}</h2>
+
+{% for task in tasks %}
+<div class="work-item">
+
+    <h3>Area: {{ task.category_name }}</h3>
+
+    <p><strong>Finding:</strong> {{ task.problem_text }}</p>
+
+    {% if task.description %}
+    <p><strong>Instructions:</strong> {{ task.description }}</p>
+    {% endif %}
+
+    <p><strong>Status:</strong> {{ task.status }}</p>
+
+</div>
+<hr>
+{% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>View Bids</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+</head>
+
+<body>
+<div class="container">
+<div class="card">
+
+    <h1>Submitted Bids</h1>
+
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Estimate #</th>
+                    <th>Customer</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bid in bids %}
+                <tr>
+                    <td>{{ bid.date }}</td>
+                    <td>{{ bid.estimate_number }}</td>
+                    <td>{{ bid.customer }}</td>
+                    <td>{{ bid.address }}</td>
+                    <td>{{ bid.phone }}</td>
+                    <td>{{ bid.email }}</td>
+                    <td class="actions-cell">
+                        <a href="{{ url_for('view_bid', bid_id=bid.bid_id) }}"
+                           class="btn btn-secondary">
+                            View
+                        </a>
+
+                        <a href="{{ url_for('delete_bid', bid_id=bid.bid_id) }}"
+                           class="btn btn-danger">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" class="empty-state">
+                        No bids have been submitted yet.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ url_for('home') }}" class="btn btn-secondary">
+        Back to Home
+    </a>
+
+</div>
+</div>
+</body>
+</html>

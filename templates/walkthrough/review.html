@@ -1,0 +1,59 @@
+{% extends "walkthrough/base.html" %}
+
+{% block title %}Walkthrough Review{% endblock %}
+
+{% block header %}
+<h1>Walkthrough – {{ job.job_name }}</h1>
+
+<a href="{{ url_for('job_details', job_id=job.job_id) }}"
+   class="btn btn-secondary">
+    Back to Job
+</a>
+{% endblock %}
+
+{% block content %}
+
+<form method="post">
+
+{% for task in tasks %}
+<div class="card walkthrough-item">
+
+    <div class="card-header">
+        <strong>{{ task.category_name }}</strong> —
+        {{ task.problem_text }}
+    </div>
+
+    <div class="card-body">
+
+        <div class="form-group">
+            <label>Notes / Action</label>
+            <textarea name="description_{{ task.id }}"
+                      class="form-control"
+                      rows="3">{{ task.description }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Status</label>
+            <select name="status_{{ task.id }}" class="form-control">
+                <option value="Pending" {% if task.status == 'Pending' %}selected{% endif %}>
+                    Needs Attention
+                </option>
+                <option value="Done" {% if task.status == 'Done' %}selected{% endif %}>
+                    Completed
+                </option>
+            </select>
+        </div>
+
+        <input type="hidden" name="task_ids[]" value="{{ task.id }}">
+
+    </div>
+</div>
+{% endfor %}
+
+<button type="submit" class="btn btn-success">
+    Save Walkthrough
+</button>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add Job</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Add New Job</h1>
+
+            {% if error %}
+                <div class="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form action="{{ url_for('add_job') }}" method="post">
+
+                <!-- JOB INFO -->
+                <h2 class="section-title">Job Info</h2>
+
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date">
+                </div>
+
+                <div class="form-group">
+                    <label for="job_name">Job Name</label>
+                    <input type="text" id="job_name" name="job_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Job Address</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Quoted Price</label>
+                    <input type="number" id="price" name="price" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="projected_start_date">Projected Start Date</label>
+                    <input type="date" id="projected_start_date" name="projected_start_date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="projected_end_date">Projected End Date</label>
+                    <input type="date" id="projected_end_date" name="projected_end_date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="type_id">Job Type</label>
+                    <select name="type_id" id="type_id">
+                        {% for job_type in job_types %}
+                            <option value="{{ job_type[0] }}">{{ job_type[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Job Workflow</label>
+                    <select name="workflow_type" class="form-control" required>
+                        <option value="inspection">Inspection / Walkthrough</option>
+                        <option value="repair">Repair / Fix Issues</option>
+                        <option value="new_build">New Build / Install</option>
+                        <option value="service">Service Call</option>
+                    </select>
+                </div>
+                
+                <!-- CUSTOMER INFO -->
+                <h2 class="section-title">Customer Info</h2>
+
+                <div class="form-group">
+                    <label for="customer_name">Customer Name</label>
+                    <input type="text" id="customer_name" name="customer_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="customer_phone_number">Phone Number</label>
+                    <input type="tel" id="customer_phone_number" name="customer_phone_number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="customer_address">Customer Address</label>
+                    <input type="text" id="customer_address" name="customer_address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="job_details">Job Details</label>
+                    <textarea id="job_details" name="job_details" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        <option value="Not Started">Not Started</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Add Job
+                </button>
+            </form>
+
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">
+                Back to Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

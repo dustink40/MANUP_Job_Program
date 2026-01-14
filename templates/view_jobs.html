@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>View Jobs</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+</head>
+
+<body>
+<div class="container">
+<div class="card">
+
+    <h1>Job List</h1>
+
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Job</th>
+                    <th>Price</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Type</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                <tr>
+                    <td>{{ job.job_name }}</td>
+                    <td>${{ job.price }}</td>
+                    <td>{{ job.projected_start_date }}</td>
+                    <td>{{ job.projected_end_date }}</td>
+                    <td>
+                        {% for job_type in job_types %}
+                            {% if job_type.type_id == job.type_id %}
+                                {{ job_type.type_name }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{ job.customer_name }}</td>
+                    <td>{{ job.status or 'Not Set' }}</td>
+                    <td class="actions-cell">
+
+                        <a href="{{ url_for('job_details', job_id=job.job_id) }}"
+                           class="btn btn-secondary">
+                            View
+                        </a>
+
+                        <a href="{{ url_for('edit_job', job_id=job.job_id) }}"
+                           class="btn btn-primary">
+                            Edit
+                        </a>
+
+                        <a href="{{ url_for('delete_job', job_id=job.job_id) }}"
+                           class="btn btn-danger">
+                            Delete
+                        </a>
+
+                        {% if job.status != 'Completed' %}
+                        <form action="{{ url_for('mark_job_as_complete', job_id=job.job_id) }}"
+                              method="post">
+                            <button type="submit" class="btn btn-success">
+                                Complete
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="8" class="empty-state">
+                        No jobs found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ url_for('home') }}" class="btn btn-secondary">
+        Back to Home
+    </a>
+
+</div>
+</div>
+</body>
+</html>

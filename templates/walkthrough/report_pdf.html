@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Walkthrough Report</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 24px;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        .finding {
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+
+        img {
+            width: 200px;
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Walkthrough Report</h1>
+<h2>{{ job.job_name }}</h2>
+
+{% for area in areas %}
+<h2>{{ area.name }}</h2>
+
+    {% if problems[area.area_id] %}
+        {% for problem in problems[area.area_id] %}
+        <div class="finding">
+            <h3>Finding: {{ problem.problem_text }}</h3>
+
+            {% if problem.notes %}
+            <p><strong>Notes:</strong> {{ problem.notes }}</p>
+            {% endif %}
+
+            {% if problem.filename %}
+            <img src="file://{{ problem.filename }}" alt="Finding Image">
+            {% endfor %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No issues noted for this area.</p>
+    {% endif %}
+
+{% endfor %}
+
+</body>
+</html>
