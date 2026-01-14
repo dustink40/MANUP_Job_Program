@@ -1,0 +1,12 @@
+@media (max-width: 640px) {
+  .btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.1rem;
+  }
+
+  .actions,
+  .actions-cell {
+    flex-direction: column;
+  }
+}

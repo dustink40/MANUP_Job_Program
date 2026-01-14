@@ -1,0 +1,35 @@
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: var(--space-md);
+}
+
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.dashboard-section {
+  background: var(--bg-card);
+  padding: var(--space-md);
+  border-radius: var(--radius);
+}
+
+.dashboard-section h2 {
+  margin-top: 0;
+  margin-bottom: var(--space-sm);
+}
+
